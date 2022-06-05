@@ -11,11 +11,21 @@
 
 <script>
 export default {
-    props: ['title'],
+    props: {
+        title: String,
+        start: {
+            type: Number,
+            // required: true,
+            default: 100,
+            validator(value) {
+                return value >=0
+            }
+        }
+    },
     // name: 'Counter',
     data(){
         return {
-            counter: 5
+            counter: this.start
         }
     },
     methods: {
