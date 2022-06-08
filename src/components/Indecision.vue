@@ -12,7 +12,7 @@
 
       <div v-if="isValidQuestion">
         <h2>{{question}}</h2>
-        <h1>{{ answer==='yes' ? 'SI!' : 'NO!' }}</h1>
+        <h1>{{ answer }}</h1>
       </div>
 
   </div>
@@ -33,17 +33,27 @@ export default {
     },
     methods: {
         async getAnswer(){
-            this.answer = 'Pensando...'
-            const {answer, image} = await fetch('https://yesno.wtf/api')
-                .then(resp => resp.json())
-            this.answer = answer
-            this.img = image
+
+            try {
+                
+                this.answer = 'Pensando...'
+                const {answer, image} = await fetch('https://yesno.wtf/api')
+                    .then(resp => resp.json())
+                this.answer = answer === 'yes' ? 'Si!' : 'No!'
+                this.img = image
+         
+            } catch (error) {
+                console.log('IndecisionComponent: ', error);
+                this.answer = 'No se pudo cargar del API'
+                this.img = null
+            }
         }
+
     },
     watch: {
         question( value, oldValue){
             // this.isValidQuestion = false
-            console.log(value);
+            console.log({value});
 
             if(!value.includes('?')) return
 
